@@ -2,11 +2,11 @@
 
 ### 环境说明
 
-##### Envoy Mesh使用的网络: 172.31.90.0/24
+##### Envoy Mesh使用的网络: 172.17.81.77/20
 
 ##### 6个Service:
 
-- front-envoy：Front Proxy,地址为172.31.90.10
+- front-envoy：Front Proxy,地址为172.17.81.77
 - 3个http后端服务，仅是用于提供测试用的上游服务器，可统一由myservice名称解析到；front-envoy会通过http（会自动跳转至https）和https侦听器接收对这些服务的访问请求，并将其转为http请求后转至后端服务上； （https-http）
   - service-blue
   - service-red
@@ -77,7 +77,7 @@ Certificate Details:
    首先查看front-envoy启动的Listener
 
    ```
-   curl 172.31.90.10:9901/listeners
+   curl 172.17.81.77:9901/listeners
    # 下面的命令结果显示出，front-envoy上同时监听有http和https相关的套接字
    listener_http::0.0.0.0:80
    listener_https::0.0.0.0:443
@@ -86,7 +86,7 @@ Certificate Details:
    而后查看front-envoy加载的证书
 
    ```
-    curl 172.31.90.10:9901/certs
+    curl 172.17.81.77:9901/certs
     #下面的结果显示出，front-envoy已然加载了相关的数字证书
    {
     "certificates": [
@@ -116,10 +116,10 @@ Certificate Details:
    直接向front-envoy发起的http请求，将会被自动跳转至https服务上。
 
    ```
-   curl -I 172.31.90.10/
+   curl -I /
    # 命令结果显示了自动跳转的结果
    HTTP/1.1 301 Moved Permanently
-   location: https://172.31.90.10:443/
+   location: https://172.17.81.77:443/
    date: Sat, 06 Nov 2021 10:29:37 GMT
    server: envoy
    transfer-encoding: chunked
@@ -128,7 +128,7 @@ Certificate Details:
    https侦听器监听的443端口也能够正常接收客户端访问，这里可以直接使用openssl s_client命令进行测试。
 
    ```
-   openssl s_client -connect 172.31.90.10:443
+   openssl s_client -connect 172.17.81.77:443
    # 如下命令结果显示，tls传话已然能正常建立，但curl命令无法任何服务端证书的CA，除非我们给命令指定相应
    # 的私有CA的证书，以便于验证服务端证书
    CONNECTED(00000003)
@@ -177,30 +177,25 @@ Certificate Details:
 
    ```
    # 先向gray服务发起访问请求进行测试
-   curl -k https://172.31.90.10/service/gray  
+   curl -k https://172.17.81.77/service/gray  
    Hello from App behind Envoy (service gray)! hostname: 9b1cc51c4223 resolved hostname: 172.31.90.15
    
    # 还可以请求purple服务
-   curl -k https://172.31.90.10/service/purple
+   curl -k https://172.17.81.77/service/purple
    Hello from App behind Envoy (service purple)! hostname: 1420024e116c resolved hostname: 172.31.90.16
    ```
 
    从front-envoy的日志信息中可以看出，它向上游的gray或者purple发起请求时，使用的都是https连接。
 
    ```
-   # 如下日志信息显示，front-envoy向172.31.90.15（service-gray）的443端口发起了访问请求；
-   front-envoy_1  | [2021-11-06T10:47:57.445Z] "GET /service/gray HTTP/1.1" 200 - 0 99 7 7 "-" "curl/7.68.0" "66c148c1-105f-421b-8893-df05b79bab57" "172.31.90.10" "172.31.90.15:443"
+   # 如下日志信息显示，front-envoy向172.17.81.11（service-gray）的443端口发起了访问请求；
+   front-envoy_1  | [2021-11-06T10:47:57.445Z] "GET /service/gray HTTP/1.1" 200 - 0 99 7 7 "-" "curl/7.68.0" "66c148c1-105f-421b-8893-df05b79bab57" "172.17.81.11" "172.17.81.11:443"
    
-   # 如下日志信息显示，front-envoy向172.31.90.16（service-purple）的443端口发起了访问请求；
-   front-envoy_1  | [2021-11-06T10:47:45.733Z] "GET /service/purple HTTP/1.1" 200 - 0 101 7 6 "-" "curl/7.68.0" "aa4b044e-edcd-4826-84d4-c4d40a674beb" "172.31.90.10" "172.31.90.16:443"
+   # 如下日志信息显示，front-envoy向172.17.81.12（service-purple）的443端口发起了访问请求；
+   front-envoy_1  | [2021-11-06T10:47:45.733Z] "GET /service/purple HTTP/1.1" 200 - 0 101 7 6 "-" "curl/7.68.0" "aa4b044e-edcd-4826-84d4-c4d40a674beb" "172.17.81.12" "172.17.81.12:443"
    ```
 
 4. 停止后清理
 
 ```
 docker-compose down
-```
-
-## 版权声明
-
-本文档版本归[马哥教育](www.magedu.com)所有，未经允许，不得随意转载和商用。
