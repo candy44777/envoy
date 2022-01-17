@@ -2,10 +2,10 @@
 环境说明
 五个Service:
 
-envoy：Front Proxy,地址为172.17.128.77 
-webserver01：第一个后端服务 
-webserver01-sidecar：第一个后端服务的Sidecar Proxy,地址为172.17.128.11 
-webserver02：第二个后端服务 
+envoy：Front Proxy,地址为172.17.128.77
+webserver01：第一个后端服务
+webserver01-sidecar：第一个后端服务的Sidecar Proxy,地址为172.17.128.11
+webserver02：第二个后端服务
 webserver02-sidecar：第二个后端服务的Sidecar Proxy,地址为172.17.128.12
 
 运行和测试
