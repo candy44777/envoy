@@ -1,0 +1,23 @@
+
+9
+	README.md,8/e/8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
+m
+=dynamic-configuration/eds-filesystem/envoy-sidecar-proxy.yaml,4/9/49c97145526ee4960fcc48c9385b197113cd012e
+e
+5dynamic-configuration/eds-filesystem/front-envoy.yaml,b/6/b654881243f6122af06d30c1d7da82fe206ec138
+^
+.dynamic-configuration/eds-filesystem/README.md,5/c/5cf4d2caedd473a423d99f2273cdbdba0e0ae4e8
+h
+8dynamic-configuration/eds-filesystem/docker-compose.yaml,8/9/893dc3f11a604cb4bf12e49483eae72dea04535d
+h
+8dynamic-configuration/lds-cds-filesystem/conf.d/cds.yaml,c/5/c58f42291d37da23a68acfce3b0a9683e58cd526
+h
+8dynamic-configuration/lds-cds-filesystem/conf.d/lds.yaml,8/0/80429fcb560e0696dc37d9d99ae7b2b700c2c98e
+l
+<dynamic-configuration/lds-cds-filesystem/docker-compose.yaml,9/9/995f6db749d895c699b00f6b8a9a21e10c203968
+q
+Adynamic-configuration/lds-cds-filesystem/envoy-sidecar-proxy.yaml,3/9/39cf4c2b68aa1b3fdfd6dab5ec7cdd5c0d796bb3
+h
+8dynamic-configuration/eds-filesystem/eds.conf.d/eds.yaml,5/c/5c40bc8054f2c3fbb0c599f66639190199016118
+i
+9dynamic-configuration/lds-cds-filesystem/front-envoy.yaml,f/0/f0c5fcace796eb22d1eb6d71970a187bca379521
